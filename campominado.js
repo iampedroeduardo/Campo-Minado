@@ -1,0 +1,234 @@
+function CriaTab(){
+    div=document.getElementById("tabuleiro");
+    for(c=0;c<20;c++){
+        for(i=0;i<10;i++){
+            cc=c;
+            if(c<10){
+                cc="0"+c;
+            }
+            div1=document.createElement("div");
+            div1.setAttribute("class","peca");
+            div1.setAttribute("id",""+cc+i);
+            div1.setAttribute("onclick","Comeca("+cc+","+i+");")
+            div2=document.createElement("div");
+            div2.setAttribute("id","1"+cc+i);
+            div2.setAttribute("class","quadrado");
+            div1.appendChild(div2);
+            div.appendChild(div1);
+        }
+    }
+}
+function Tira(c,i){
+    cc=c
+    if(c<10){
+        cc="0"+c;
+    }
+    div=document.getElementById("1"+cc+i);
+    if(div!=null){
+        div.parentNode.removeChild(div);
+        div=document.getElementById(""+cc+i);
+        div.removeAttribute("onclick");
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+function SorteiaBombas(){
+    n=75;
+    for(c=0;c<20;c++){
+        tabbomba.push([]);
+        for(i=0;i<10;i++){
+            tabbomba[c][i]="";
+        }
+    }
+    for(c=0;c<n;c++){
+        n1=Math.floor(Math.random()*20);
+        n2=Math.floor(Math.random()*10);
+        n11=n1;
+        if(n1<10){
+            n11="0"+n1
+        }
+        if(document.getElementById("1"+n11+n2)!=null && tabbomba[n1][n2]!="bomba"){
+            tabbomba[n1][n2]="bomba";
+        }
+        else{
+            c--;
+        }
+    }
+}
+function Testa(c,i){
+    cc=c
+    if(c<10){
+        cc="0"+c;
+    }
+    div1=document.getElementById(""+cc+i);
+    if(div1!=null){
+        return tabbomba[c][i]=="bomba";
+    }
+    else{
+        return false;
+    }
+}
+function ColocaNumero(){
+    tof=true;
+    while(tof){
+        tof=false;
+        for(c=0;c<20;c++){
+            for(i=0;i<10;i++){
+                cc=c;
+                if(c<10){
+                    cc="0"+c;
+                }
+                if(document.getElementById("1"+cc+i)==null){
+                    console.log(document.getElementById(""+cc+i))
+                    div=document.getElementById(""+cc+i);
+                    cont=0;
+                    if(Testa(c-1,i-1)){
+                        cont++;
+                    }
+                    if(Testa(c,i-1)){
+                        cont++;
+                    }
+                    if(Testa(c+1,i-1)){
+                        cont++;
+                    }
+                    if(Testa(c-1,i)){
+                        cont++;
+                    }
+                    if(Testa(c+1,i)){
+                        cont++;
+                    }
+                    if(Testa(c-1,i+1)){
+                        cont++;
+                    }
+                    if(Testa(c,i+1)){
+                        cont++;
+                    }
+                    if(Testa(c+1,i+1)){
+                        cont++;
+                    }
+                    if(cont>0){
+                        div.innerHTML=cont;
+                    }
+                    else{
+                        if(Tira(c-1,i-1) || Tira(c,i-1) || Tira(c+1,i-1) || Tira(c-1,i) || Tira(c+1,i) || Tira(c-1,i+1) || Tira(c,i+1) || Tira(c+1,i+1)){
+                            tof=true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+function TestaBomba(c,i){
+    if(tabbomba[c][i]!="bomba"){
+        Tira(c,i);
+        ColocaNumero();
+        cc=c;
+        if(c<10){
+            cc="0"+c;
+        }
+    }
+    else{
+        for(c=0;c<20;c++){
+            for(i=0;i<10;i++){
+                if(tabbomba[c][i]=="bomba"){
+                    cc=c;
+                    if(c<10){
+                        cc="0"+c;
+                    }
+                    div=document.getElementById("1"+cc+i);
+                    img=new Image();
+                    img.src="Imagens/bomba.png";
+                    img.style.width="13px";
+                    img.style.height="13px";
+                    div.appendChild(img);
+                }
+            }
+        }
+    }
+}
+function Marca(c,i){
+    cc=c;
+    if(c<10){
+        cc="0"+c;
+    }
+    div=document.getElementById("1"+cc+i);
+    img=new Image();
+    img.src="Imagens/bandeira.png";
+    img.style.width="13px";
+    img.style.height="13px";
+    div.appendChild(img);
+    div=document.getElementById(""+cc+i);
+    div.removeAttribute("onclick");
+}
+function Conta(c,i){
+    intervalo=setInterval(Aumenta,1);
+    cc=c;
+    if(c<10){
+        cc="0"+c;
+    }
+    div=document.getElementById(""+cc+i);
+    div.setAttribute("onmouseup","Para("+c+","+i+")");
+}
+function Aumenta(){
+    cont++;
+}
+function Para(c,i){
+    clearInterval(intervalo);
+    if(cont>100){
+        Marca(c,i);
+    }
+    cont=0;
+}
+function ColocaClicks(){
+    for(c=0;c<20;c++){
+        for(i=0;i<10;i++){
+            cc=c;
+            if(c<10){
+                cc="0"+c;
+            }
+            if(document.getElementById("1"+cc+i)!=null){
+                div=document.getElementById(""+cc+i);
+                div.setAttribute("onclick","TestaBomba("+c+","+i+")");
+                div.setAttribute("onmousedown","Conta("+c+","+i+")");
+            }
+        }
+    }
+}
+function Comeca(lin,col){
+    lin=Number(lin);
+    col=Number(col);
+    if(lin<10){
+        lin="0"+lin;
+    }
+    console.log(lin);
+    div=document.getElementById("1"+lin+col);
+    div.parentNode.removeChild(div);
+    lin=Number(lin);
+    Tira(lin-1,col-1);
+    Tira(lin,col-1);
+    Tira(lin+1,col-1);
+    Tira(lin-1,col);
+    Tira(lin+1,col);
+    Tira(lin-1,col+1);
+    Tira(lin,col+1);
+    Tira(lin+1,col+1)
+    for(c=0;c<20;c++){
+        for(i=0;i<10;i++){
+            cc=c;
+            if(c<10){
+                cc="0"+c;
+            }
+            div1=document.getElementById(""+cc+i);
+            div1.removeAttribute("onclick");
+        }
+    }
+    SorteiaBombas();
+    ColocaNumero();
+    ColocaClicks();
+}
+var tabbomba=[], src, cont=0;
+console.log(tabbomba);
+CriaTab();
