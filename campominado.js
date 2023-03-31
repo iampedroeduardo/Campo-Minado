@@ -171,6 +171,7 @@ function Conta(c,i){
     }
     div=document.getElementById(""+cc+i);
     div.setAttribute("onmouseup","Para("+c+","+i+")");
+    div.setAttribute("ontouchend","Para("+c+","+i+")");
 }
 function Aumenta(){
     cont++;
@@ -193,6 +194,7 @@ function ColocaClicks(){
                 div=document.getElementById(""+cc+i);
                 div.setAttribute("onclick","TestaBomba("+c+","+i+")");
                 div.setAttribute("onmousedown","Conta("+c+","+i+")");
+                div.setAttribute("ontouchstart","Conta("+c+","+i+")");
             }
         }
     }
