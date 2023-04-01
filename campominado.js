@@ -164,7 +164,7 @@ function Marca(c,i){
     div.removeAttribute("onclick");
 }
 function Conta(c,i){
-    intervalo=setInterval(Aumenta,1);
+    intervalo=setInterval(Aumenta,1,c,i);
     cc=c;
     if(c<10){
         cc="0"+c;
@@ -173,14 +173,16 @@ function Conta(c,i){
     div.setAttribute("onmouseup","Para("+c+","+i+")");
     div.setAttribute("ontouchend","Para("+c+","+i+")");
 }
-function Aumenta(){
+function Aumenta(c,i){
     cont++;
+    if(cont>150){
+        Marca(c,i);
+        clearInterval(intervalo);
+        cont=0;
+    }
 }
 function Para(c,i){
     clearInterval(intervalo);
-    if(cont>100){
-        Marca(c,i);
-    }
     cont=0;
 }
 function ColocaClicks(){
