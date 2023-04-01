@@ -110,6 +110,24 @@ function ColocaNumero(){
                     }
                     if(cont>0){
                         div.innerHTML=cont;
+                        if(cont==1){
+                            div.setAttribute("style","color:blue");
+                        }
+                        else if(cont==2){
+                            div.setAttribute("style","color:green");
+                        }
+                        else if(cont==3){
+                            div.setAttribute("style","color:red");
+                        }
+                        else if(cont==4){
+                            div.setAttribute("style","color:purple");
+                        }
+                        else if(cont==5){
+                            div.setAttribute("style","color:rgb(134, 30, 30)");
+                        }
+                        else if(cont==2){
+                            div.setAttribute("style","color:blue");
+                        }
                     }
                     else{
                         if(Tira(c-1,i-1) || Tira(c,i-1) || Tira(c+1,i-1) || Tira(c-1,i) || Tira(c+1,i) || Tira(c-1,i+1) || Tira(c,i+1) || Tira(c+1,i+1)){
@@ -133,18 +151,28 @@ function TestaBomba(c,i){
     else{
         for(c=0;c<20;c++){
             for(i=0;i<10;i++){
-                if(tabbomba[c][i]=="bomba"){
-                    cc=c;
-                    if(c<10){
-                        cc="0"+c;
-                    }
-                    div=document.getElementById("1"+cc+i);
-                    img=new Image();
-                    img.src="Imagens/bomba.png";
-                    img.style.width="13px";
-                    img.style.height="13px";
-                    div.appendChild(img);
+                cc=c;
+                if(c<10){
+                    cc="0"+c;
                 }
+                if(tabbomba[c][i]=="bomba"){
+                    if(document.getElementById("2"+cc+i)==null){
+                        div=document.getElementById("1"+cc+i);
+                        div.parentNode.removeChild(div);
+                        img=new Image();
+                        img.src="Imagens/bomba.png";
+                        img.style.width="13px";
+                        img.style.height="13px";
+                        img.setAttribute("id","2"+cc+i);
+                        div=document.getElementById(""+cc+i);
+                        div.appendChild(img);
+                    }
+                }
+                document.getElementById(""+cc+i).removeAttribute("onclick");
+                document.getElementById(""+cc+i).removeAttribute("onmousedown");
+                document.getElementById(""+cc+i).removeAttribute("ontouchstart");
+                document.getElementById(""+cc+i).removeAttribute("onmouseup");
+                document.getElementById(""+cc+i).removeAttribute("ontouchend");
             }
         }
     }
@@ -155,13 +183,22 @@ function Marca(c,i){
         cc="0"+c;
     }
     div=document.getElementById("1"+cc+i);
-    img=new Image();
-    img.src="Imagens/bandeira.png";
-    img.style.width="13px";
-    img.style.height="13px";
-    div.appendChild(img);
-    div=document.getElementById(""+cc+i);
-    div.removeAttribute("onclick");
+    if(document.getElementById("2"+cc+i)==null){
+        img=new Image();
+        img.src="Imagens/bandeira.png";
+        img.style.width="13px";
+        img.style.height="13px";
+        img.setAttribute("id","2"+cc+i)
+        div.appendChild(img);
+        div=document.getElementById(""+cc+i);
+        div.removeAttribute("onclick");
+    }
+    else{
+        img=document.getElementById("2"+cc+i);
+        img.parentNode.removeChild(img);
+        div=document.getElementById(""+cc+i);
+        div.setAttribute("onclick","TestaBomba("+c+","+i+")");
+    }
 }
 function Conta(c,i){
     intervalo=setInterval(Aumenta,1,c,i);
