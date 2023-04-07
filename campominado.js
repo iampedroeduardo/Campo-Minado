@@ -161,8 +161,8 @@ function TestaBomba(c,i){
                         div.parentNode.removeChild(div);
                         img=new Image();
                         img.src="Imagens/bomba.png";
-                        img.style.width="13px";
-                        img.style.height="13px";
+                        img.style.width="17px";
+                        img.style.height="17px";
                         img.setAttribute("id","2"+cc+i);
                         div=document.getElementById(""+cc+i);
                         div.appendChild(img);
