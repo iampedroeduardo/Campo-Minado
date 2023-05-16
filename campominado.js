@@ -35,7 +35,7 @@ function Tira(c,i){
     }
 }
 function SorteiaBombas(){
-    n=75;
+    n=60;
     for(c=0;c<20;c++){
         tabbomba.push([]);
         for(i=0;i<10;i++){
